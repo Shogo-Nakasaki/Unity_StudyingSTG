@@ -1,0 +1,4 @@
+repository "22_003_StudyingSTG@ShogoN_JPN@cloud"
+  path "/"
+    br "/main"
+    co "/main"
