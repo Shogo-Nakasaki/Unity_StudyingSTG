@@ -17,24 +17,24 @@ using UnityEngine;
 public class Player_Controller : MonoBehaviour
 {
     //! 移動スピードの設定
-    private float move_speed = 0.1f;
+    [System.NonSerialized]public float move_speed = 0.1f;
     //! 移動処理で使用
-    private Rigidbody2D m_Rigidody = null;
+    [System.NonSerialized] private Rigidbody2D m_Rigidody = null;
 
-    // 仮死亡は点滅
+    // 敵接触時、点滅
     //! 点滅の再生時間
-    private float m_Death_TimeMax = 5.0f;
+    [System.NonSerialized] public float m_contact_TimeMax = 5.0f;
     //! 点滅の再生タイマー
-    private float m_Death_Timer = 0.0f;
+    [System.NonSerialized] public float m_contact_Timer = 0.0f;
     //! 点滅の周期時間
-    private float m_Death_IntervalMax = 0.2f;
+    [System.NonSerialized] public float m_contact_IntervalMax = 0.2f;
     //! 点滅の周期タイマー
-    private float m_Death_IntervalTimer = 0.0f;
-    //! 死亡時判定のフラグ
-    private bool m_ALive = true;
+    [System.NonSerialized] public float m_contact_IntervalTimer = 0.0f;
+    //! 接触判定のフラグ
+    [System.NonSerialized] public bool m_contact = true;
 
     //! 描画spriteRender
-    private SpriteRenderer m_SpriteRenderer;
+    [System.NonSerialized] private SpriteRenderer m_SpriteRenderer;
 
     //! ファンネルの設定(後で消すかも)
     [SerializeField] GameObject funnel;
@@ -61,7 +61,7 @@ public class Player_Controller : MonoBehaviour
     private void Update()
     {
         Player_Move();
-        funnel.transform.Rotate(new Vector3(0, 0, 5));
+        funnel.transform.Rotate(new Vector3(0, 0, 0.5f));
     }
 
 
@@ -71,8 +71,8 @@ public class Player_Controller : MonoBehaviour
      -------------------------------------------------- */
     private void Player_Move()
     {
-        Vector3 add_Dir = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
-        Vector3 new_Pos = transform.position + (add_Dir.normalized * move_speed);
+        Vector3 addDirect = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
+        Vector3 new_Position = transform.position + (addDirect.normalized * move_speed);
 
         // 移動制限
         // 左下と右上に点を取る
@@ -84,31 +84,33 @@ public class Player_Controller : MonoBehaviour
         screen_LB.y += m_SpriteRenderer.bounds.size.y / 2.0f;
         screen_RU.y -= m_SpriteRenderer.bounds.size.y / 2.0f;
 
-        // 移動制限を設けて繁栄
+        // 移動制限を設けて反映
         m_Rigidody.position = new Vector2(
-            Mathf.Clamp(new_Pos.x, screen_LB.x, screen_RU.x),
-            Mathf.Clamp(new_Pos.y, screen_LB.y, screen_RU.y));
+            Mathf.Clamp(new_Position.x, screen_LB.x, screen_RU.x),   // X座標の制限
+            Mathf.Clamp(new_Position.y, screen_LB.y, screen_RU.y)    // Y座標の制限
+            );
 
         // 加速力は常に0
         m_Rigidody.velocity = Vector2.zero;
 
         // 点滅タイマーが設定されていたとき
-        if (0 <= m_Death_Timer)
+        if (0 <= m_contact_Timer)
         {
             // 点滅間隔タイマーで切り替えタイミングを判定
-            if (m_Death_IntervalMax < m_Death_IntervalTimer)
+            if (m_contact_IntervalMax < m_contact_IntervalTimer)
             {
                 // 表示切替と点滅感覚タイマーを初期化
-                Set_Visible(!m_ALive);
-                m_Death_IntervalTimer = 0;
+                Set_Visible(!m_contact);
+                m_contact_IntervalTimer = 0;
             }
             // タイマーを進める
-            m_Death_IntervalTimer += Time.deltaTime;
-            m_Death_Timer -= Time.deltaTime;
+            m_contact_IntervalTimer += Time.deltaTime;
+            m_contact_Timer -= Time.deltaTime;
 
-            if (m_Death_Timer <= 0)
+            if (m_contact_Timer <= 0)
             {
                 Set_Visible(true);
+                Debug.Log("点滅終了");
             }
         }
     }
@@ -120,8 +122,8 @@ public class Player_Controller : MonoBehaviour
      -------------------------------------------------- */
     private void Set_Visible(bool visible)
     {
-        m_ALive = visible;
-        m_SpriteRenderer.enabled = m_ALive;
+        m_contact = visible;
+        m_SpriteRenderer.enabled = m_contact;
     }
 
     /** --------------------------------------------------
@@ -131,10 +133,10 @@ public class Player_Controller : MonoBehaviour
      -------------------------------------------------- */
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(m_Death_Timer <= 0)
+        if(m_contact_Timer <= 0)
         {
-            m_Death_IntervalTimer = 0;
-            m_Death_Timer = m_Death_TimeMax;
+            m_contact_IntervalTimer = 0;
+            m_contact_Timer = m_contact_TimeMax;
         }
     }
 }
