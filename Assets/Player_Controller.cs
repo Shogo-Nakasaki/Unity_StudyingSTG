@@ -19,7 +19,7 @@ public class Player_Controller : MonoBehaviour
     //! 移動スピードの設定
     [System.NonSerialized]public float move_speed = 0.1f;
     //! 移動処理で使用
-    [System.NonSerialized] private Rigidbody2D m_Rigidody = null;
+    [System.NonSerialized] private Rigidbody2D Player_Rigidody = null;
 
     // 敵接触時、点滅
     //! 点滅の再生時間
@@ -37,7 +37,7 @@ public class Player_Controller : MonoBehaviour
     [System.NonSerialized] private SpriteRenderer m_SpriteRenderer;
 
     //! ファンネルの設定(後で消すかも)
-    [SerializeField] GameObject funnel;
+    // [SerializeField] GameObject funnel;
 
     /** --------------------------------------------------
      * @fn      Start
@@ -50,8 +50,8 @@ public class Player_Controller : MonoBehaviour
         Debug.AssertFormat(m_SpriteRenderer != null, "NotEXIST:Spritedrenderer in Children");
 
         // Rigidbodyを取得
-        m_Rigidody = GetComponent<Rigidbody2D>();
-        Debug.AssertFormat(m_Rigidody != null, "NotEXIST:Rigidboddy2D");
+        Player_Rigidody = GetComponent<Rigidbody2D>();
+        Debug.AssertFormat(Player_Rigidody != null, "NotEXIST:Rigidboddy2D");
     }
 
     /** --------------------------------------------------
@@ -61,7 +61,7 @@ public class Player_Controller : MonoBehaviour
     private void Update()
     {
         Player_Move();
-        funnel.transform.Rotate(new Vector3(0, 0, 0.5f));
+        // funnel.transform.Rotate(new Vector3(0, 0, 0.5f));
     }
 
 
@@ -79,19 +79,19 @@ public class Player_Controller : MonoBehaviour
         Vector3 screen_LB = Camera.main.ScreenToWorldPoint(Vector3.zero);
         Vector3 screen_RU = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
 
-        screen_LB.x += m_SpriteRenderer.bounds.size.x / 2.0f;
-        screen_RU.x -= m_SpriteRenderer.bounds.size.x / 2.0f;
-        screen_LB.y += m_SpriteRenderer.bounds.size.y / 2.0f;
-        screen_RU.y -= m_SpriteRenderer.bounds.size.y / 2.0f;
+        screen_LB.x += m_SpriteRenderer.bounds.size.x / 4.0f;
+        screen_RU.x -= m_SpriteRenderer.bounds.size.x / 4.0f;
+        screen_LB.y += m_SpriteRenderer.bounds.size.y / 3.0f;
+        screen_RU.y -= m_SpriteRenderer.bounds.size.y / 3.0f;
 
         // 移動制限を設けて反映
-        m_Rigidody.position = new Vector2(
+        Player_Rigidody.position = new Vector2(
             Mathf.Clamp(new_Position.x, screen_LB.x, screen_RU.x),   // X座標の制限
             Mathf.Clamp(new_Position.y, screen_LB.y, screen_RU.y)    // Y座標の制限
             );
 
         // 加速力は常に0
-        m_Rigidody.velocity = Vector2.zero;
+        Player_Rigidody.velocity = Vector2.zero;
 
         // 点滅タイマーが設定されていたとき
         if (0 <= m_contact_Timer)
