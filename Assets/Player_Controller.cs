@@ -37,7 +37,7 @@ public class Player_Controller : MonoBehaviour
     [System.NonSerialized] private SpriteRenderer m_SpriteRenderer;
 
     //! ファンネルの設定(後で消すかも)
-    [SerializeField] GameObject funnel;
+    // [SerializeField] GameObject funnel;
 
     /** --------------------------------------------------
      * @fn      Start
@@ -61,7 +61,7 @@ public class Player_Controller : MonoBehaviour
     private void Update()
     {
         Player_Move();
-        funnel.transform.Rotate(new Vector3(0, 0, 0.5f));
+        // funnel.transform.Rotate(new Vector3(0, 0, 0.5f));
     }
 
 
