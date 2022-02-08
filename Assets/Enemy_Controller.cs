@@ -1,6 +1,6 @@
-/**
+ï»¿/**
  *  @file   Enemy_Controller.cs
- *  @brief  “GƒLƒƒƒ‰ŠÖ˜A‚Ìˆ—‚ğ‹LÚ
+ *  @brief  æ•µã‚­ãƒ£ãƒ©é–¢é€£ã®å‡¦ç†ã‚’è¨˜è¼‰
  *  @author S.Nakasaki
  *  @date   2022.02.08
  */
@@ -10,8 +10,8 @@ using UnityEngine;
 
 /** 
  *  @clas   Enemy_Controller
- *  @brief  “GƒLƒƒƒ‰ŠÖ˜A‚Ìˆ—‚ğ‹LÚ
- *          “G‚Ìî•ñiƒLƒƒƒ‰ƒCƒ‰ƒXƒg‚âs“®j‚ÌØ‚è‘Ö‚¦‚ğŠÇ—
+ *  @brief  æ•µã‚­ãƒ£ãƒ©é–¢é€£ã®å‡¦ç†ã‚’è¨˜è¼‰
+ *          æ•µã®æƒ…å ±ï¼ˆã‚­ãƒ£ãƒ©ã‚¤ãƒ©ã‚¹ãƒˆã‚„è¡Œå‹•ï¼‰ã®åˆ‡ã‚Šæ›¿ãˆã‚’ç®¡ç†
  */
 public class Enemy_Controller : MonoBehaviour
 {
