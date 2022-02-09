@@ -1,6 +1,6 @@
-/**
+ï»¿/**
  *  @file   BulletState.cs
- *  @brief  ’eí‚ÉŠÖ˜A‚Ìˆ—‚ğ‹LÚ
+ *  @brief  å¼¾ç¨®ã«é–¢é€£ã®å‡¦ç†ã‚’è¨˜è¼‰
  *  @author S.Nakasaki
  *  @date   2022.02.10
  */
