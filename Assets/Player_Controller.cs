@@ -1,7 +1,7 @@
 ﻿/**
  *  @file   Player_Controller.cs
  *  @brief  プレイヤー関連の処理を記載
- *  @author ShogoN
+ *  @author S.Nakasaki
  *  @date   2022.02.01
  */
 using System.Collections;
@@ -23,15 +23,15 @@ public class Player_Controller : MonoBehaviour
 
     // 敵接触時、点滅
     //! 点滅の再生時間
-    [System.NonSerialized] public float m_contact_TimeMax = 5.0f;
+    [System.NonSerialized] public float contact_TimeMax = 5.0f;
     //! 点滅の再生タイマー
-    [System.NonSerialized] public float m_contact_Timer = 0.0f;
+    [System.NonSerialized] public float contact_Timer = 0.0f;
     //! 点滅の周期時間
-    [System.NonSerialized] public float m_contact_IntervalMax = 0.2f;
+    [System.NonSerialized] public float contact_IntervalMax = 0.2f;
     //! 点滅の周期タイマー
-    [System.NonSerialized] public float m_contact_IntervalTimer = 0.0f;
+    [System.NonSerialized] public float contact_IntervalTimer = 0.0f;
     //! 接触判定のフラグ
-    [System.NonSerialized] public bool m_contact = true;
+    [System.NonSerialized] public bool contact = true;
 
     //! 描画spriteRender
     [System.NonSerialized] private SpriteRenderer m_SpriteRenderer;
@@ -94,20 +94,20 @@ public class Player_Controller : MonoBehaviour
         Player_Rigidody.velocity = Vector2.zero;
 
         // 点滅タイマーが設定されていたとき
-        if (0 <= m_contact_Timer)
+        if (0 <= contact_Timer)
         {
             // 点滅間隔タイマーで切り替えタイミングを判定
-            if (m_contact_IntervalMax < m_contact_IntervalTimer)
+            if (contact_IntervalMax < contact_IntervalTimer)
             {
                 // 表示切替と点滅感覚タイマーを初期化
-                Set_Visible(!m_contact);
-                m_contact_IntervalTimer = 0;
+                Set_Visible(!contact);
+                contact_IntervalTimer = 0;
             }
             // タイマーを進める
-            m_contact_IntervalTimer += Time.deltaTime;
-            m_contact_Timer -= Time.deltaTime;
+            contact_IntervalTimer += Time.deltaTime;
+            contact_Timer -= Time.deltaTime;
 
-            if (m_contact_Timer <= 0)
+            if (contact_Timer <= 0)
             {
                 Set_Visible(true);
                 Debug.Log("点滅終了");
@@ -122,8 +122,8 @@ public class Player_Controller : MonoBehaviour
      -------------------------------------------------- */
     private void Set_Visible(bool visible)
     {
-        m_contact = visible;
-        m_SpriteRenderer.enabled = m_contact;
+        contact = visible;
+        m_SpriteRenderer.enabled = contact;
     }
 
     /** --------------------------------------------------
@@ -133,10 +133,10 @@ public class Player_Controller : MonoBehaviour
      -------------------------------------------------- */
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(m_contact_Timer <= 0)
+        if(contact_Timer <= 0)
         {
-            m_contact_IntervalTimer = 0;
-            m_contact_Timer = m_contact_TimeMax;
+            contact_IntervalTimer = 0;
+            contact_Timer = contact_TimeMax;
         }
     }
 }

@@ -13,9 +13,21 @@ using UnityEngine;
  *  @brief  敵キャラ関連の処理を記載
  *          敵の情報（キャライラストや行動）の切り替えを管理
  */
+
+    /*
+     * 行動リストを作成
+     */
 public class Enemy_Controller : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //! 敵の行動パターンを格納するリスト
+    [SerializeField] private List<EnemyState> EnemyStates;
+    //! 現在の行動パターン
+    private int EnemyState_Index;
+    // 行動を切り替えるまでの時間
+    private float EnemyState_Timer;
+    //! 弾種を保持するための変数
+    private List<BulletState> BulletStates = new List<BulletState>();
+    
     void Start()
     {
         
@@ -26,4 +38,12 @@ public class Enemy_Controller : MonoBehaviour
     {
         
     }
+}
+
+public class EnemyState
+{
+    //! 行動の時間
+    [SerializeField] public float Timee;
+    //! 行動中に発生する弾種
+    [SerializeField] public BulletState[] BulletState;
 }
